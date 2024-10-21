@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MeasureME</title>
+    <!-- Include Material Design CSS -->
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <!-- Include custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Viewport Meta Tag for Mobile Responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="#" id="homeLink" class="active">Home</a></li>
+            <li><a href="#" id="settingsLink">Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page">
+        <h1>MeasureME</h1>
+        <!-- Video Feed and Measurements -->
+        <div class="video-container">
+            <div id="liveView" class="live-view">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="webcamCanvas" class="canvas"></canvas>
+            </div>
+            <!-- Display Current and Averaged Measurements -->
+            <div id="measurementDisplay">
+                <h3>Measurements (cm):</h3>
+                <table id="measurementTable">
+                    <thead>
+                        <tr>
+                            <th>LegL</th>
+                            <th>LegR</th>
+                            <th>ArmL</th>
+                            <th>ArmR</th>
+                            <th>Shoulder</th>
+                            <th>UpBody</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="currentMeasurementsRow">
+                            <!-- Current Measurements will be populated here -->
+                        </tr>
+                        <tr id="averagedMeasurementsRow">
+                            <!-- Averaged Measurements will be populated here -->
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="score-flex-container">
+                    <div class="score-container">
+                        <h3>Current Confidence:</h3>
+                        <div id="confidenceScore"></div>
+                    </div>
+                    <div class="score-container">
+                        <h3>Confidence:</h3>
+                        <div id="averagedConfidenceScore"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Measurement Log -->
+        <div id="measurementLog">
+            <h3>Measurement Log:</h3>
+            <ul id="logList"></ul>
+        </div>
+
+        <!-- Controls -->
+        <div class="button-container">
+            <button id="startCameraButton" class="mdc-button mdc-button--raised">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">START CAMERA</span>
+            </button>
+            <button id="startButton" class="mdc-button mdc-button--raised" disabled>
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">START MEASUREMENT</span>
+            </button>
+            <button id="stopButton" class="mdc-button mdc-button--raised" disabled>
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">STOP MEASUREMENT</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settingsPage" class="page" style="display: none;">
+        <h1>Settings</h1>
+        <!-- Settings -->
+        <div class="settings">
+            <!-- Input for Known Height -->
+            <div class="input-container">
+                <label for="knownHeightInput"><strong>Enter Known Height (cm):</strong></label>
+                <input type="number" id="knownHeightInput" placeholder="e.g., 170" min="50" max="300">
+            </div>
+
+            <!-- Adjustable Ranges for Body Ratios -->
+            <div class="input-container">
+                <h3>Adjustable Body Ratios:</h3>
+                <div class="field-group">
+                    <div class="field-row">
+                        <label for="armRatioMin">Arm Length Min %:</label>
+                        <input type="number" id="armRatioMin" value="30" min="30" max="55">
+                    </div>
+                    <div class="field-row">
+                        <label for="armRatioMax">Arm Length Max %:</label>
+                        <input type="number" id="armRatioMax" value="55" min="35" max="55">
+                    </div>
+                    <div class="field-row">
+                        <label for="legRatioMin">Leg Length Min %:</label>
+                        <input type="number" id="legRatioMin" value="40" min="35" max="55">
+                    </div>
+                    <div class="field-row">
+                        <label for="legRatioMax">Leg Length Max %:</label>
+                        <input type="number" id="legRatioMax" value="55" min="40" max="60">
+                    </div>
+                    <div class="field-row">
+                        <label for="upBodyRatioMin">Upper Body Length Min %:</label>
+                        <input type="number" id="upBodyRatioMin" value="30" min="20" max="50">
+                    </div>
+                    <div class="field-row">
+                        <label for="upBodyRatioMax">Upper Body Length Max %:</label>
+                        <input type="number" id="upBodyRatioMax" value="50" min="40" max="60">
+                    </div>
+                    <div class="field-row">
+                        <label for="shoulderRatioMin">Shoulder Width Min %:</label>
+                        <input type="number" id="shoulderRatioMin" value="15" min="10" max="25">
+                    </div>
+                    <div class="field-row">
+                        <label for="shoulderRatioMax">Shoulder Width Max %:</label>
+                        <input type="number" id="shoulderRatioMax" value="25" min="20" max="35">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Measurement Settings -->
+            <div class="input-container">
+                <h3>Measurement Settings:</h3>
+                <div class="field-group">
+                    <div class="field-row">
+                        <label for="measurementType">Measurement Type:</label>
+                        <select id="measurementType">
+                            <option value="direct">Direct Line</option>
+                            <option value="anatomical">Anatomical Path</option>
+                        </select>
+                    </div>
+                    <div class="field-row">
+                        <label for="limbVariationThreshold">Limb Variation Threshold (%):</label>
+                        <input type="number" id="limbVariationThreshold" value="5" min="0" max="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camera Rotation Option -->
+            <div class="input-container">
+                <h3>Camera Settings:</h3>
+                <div class="field-row">
+                    <label for="rotateCamera">Rotate Camera by 90°:</label>
+                    <input type="checkbox" id="rotateCamera">
+                </div>
+            </div>
+
+            <!-- Save Settings Button -->
+            <div class="button-container">
+                <button id="saveSettingsButton" class="mdc-button mdc-button--raised">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="mdc-button__label">SAVE SETTINGS</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the script -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
