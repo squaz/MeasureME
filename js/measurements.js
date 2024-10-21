@@ -21,7 +21,7 @@ import {
 } from './ui.js';
 import { calculateDistance, areLandmarksVisible } from './utils.js';
 
-const MEASUREMENT_BUFFER_SIZE = 300;
+const MEASUREMENT_BUFFER_SIZE = 60;
 const measurementBuffer = [];
 let measurementsAveraged = {};
 
