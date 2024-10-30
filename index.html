@@ -155,12 +155,21 @@
                 </div>
             </div>
 
-            <!-- Camera Rotation Option -->
+            <!-- Camera Selection -->
             <div class="input-container">
                 <h3>Camera Settings:</h3>
+                <!-- Existing Camera Rotation Option -->
                 <div class="field-row">
-                    <label for="rotateCamera">Rotate Camera by 90°:</label>
+                    <label for="rotateCamera">Rotate Overlay by 90°:</label>
                     <input type="checkbox" id="rotateCamera">
+                </div>
+                <!-- New Camera Selection Dropdown -->
+                <div class="field-row">
+                    <label for="cameraSelect">Select Camera:</label>
+                    <select id="cameraSelect">
+                        <option value="user">Front Camera</option>
+                        <option value="environment">Back Camera</option>
+                    </select>
                 </div>
             </div>
 

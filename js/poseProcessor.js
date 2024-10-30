@@ -2,7 +2,7 @@
 
 import { PoseLandmarker, FilesetResolver, DrawingUtils } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0';
 import { processPoseData } from './measurements.js';
-import { video, webcamCanvas, rotateCameraCheckbox } from './ui.js';
+import { video, webcamCanvas, rotateCameraCheckbox, cameraSelect } from './ui.js';
 
 let poseLandmarker;
 let webcamRunning = false;
@@ -56,10 +56,10 @@ async function startCamera() {
 
 async function startCamera() {
     try {
-        // Updated constraints for better compatibility
+        const facingMode = cameraSelect.value; // 'user' or 'environment'
         const constraints = {
             video: {
-                facingMode: 'user',
+                facingMode: { exact: facingMode }, //facingMode
                 width: { ideal: 1280 },
                 height: { ideal: 720 }
             },
@@ -112,26 +112,11 @@ async function predictWebcam(knownHeight) {
     webcamCanvas.width = video.videoWidth;
     webcamCanvas.height = video.videoHeight;
 
-    const isRotated = rotateCameraCheckbox.checked;
-
-    if (isRotated) {
-        // Rotate the canvas context by 90 degrees
-        canvasCtx.save();
-        canvasCtx.translate(webcamCanvas.width / 2, webcamCanvas.height / 2);
-        canvasCtx.rotate(90 * Math.PI / 180);
-        canvasCtx.translate(-webcamCanvas.height / 2, -webcamCanvas.width / 2);
-    }
-
     const startTimeMs = performance.now();
 
     poseLandmarker.detectForVideo(video, startTimeMs, (result) => {
-        if (isRotated) {
-            // If rotated, clear rotated canvas
-            canvasCtx.clearRect(0, 0, webcamCanvas.height, webcamCanvas.width);
-        } else {
-            // Normal clear
-            canvasCtx.clearRect(0, 0, webcamCanvas.width, webcamCanvas.height);
-        }
+        // Clear the canvas
+        canvasCtx.clearRect(0, 0, webcamCanvas.width, webcamCanvas.height);
 
         if (result.landmarks.length > 0) {
             const landmarks = result.landmarks[0];
@@ -150,10 +135,6 @@ async function predictWebcam(knownHeight) {
             processPoseData(landmarks, knownHeight, canvasCtx);
         } else {
             console.warn('No pose detected.');
-        }
-
-        if (isRotated) {
-            canvasCtx.restore();
         }
     });
 
