@@ -2,7 +2,7 @@
 
 import { PoseLandmarker, FilesetResolver, DrawingUtils } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0';
 import { processPoseData } from './measurements.js';
-import { video, webcamCanvas, rotateCameraCheckbox, cameraSelect } from './ui.js';
+import { video, webcamCanvas, cameraSelect } from './ui.js';
 
 let poseLandmarker;
 let webcamRunning = false;

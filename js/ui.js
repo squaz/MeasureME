@@ -21,7 +21,6 @@ const shoulderRatioMinInput = document.getElementById('shoulderRatioMin');
 const shoulderRatioMaxInput = document.getElementById('shoulderRatioMax');
 const measurementTypeSelect = document.getElementById('measurementType');
 const limbVariationThresholdInput = document.getElementById('limbVariationThreshold');
-const rotateCameraCheckbox = document.getElementById('rotateCamera');
 const cameraSelect = document.getElementById('cameraSelect');
 
 // Measurement display elements
@@ -82,15 +81,6 @@ function initUI() {
         clearDisplay();
     });
 
-  // Camera Rotation Toggle Handler
-  rotateCameraCheckbox.addEventListener('change', () => {
-    if (rotateCameraCheckbox.checked) {
-      liveView.classList.add('rotate-90');
-    } else {
-      liveView.classList.remove('rotate-90');
-    }
-  });
-
   // Save Settings Button Handler
   saveSettingsButton.addEventListener('click', () => {
     saveSettings();
@@ -136,7 +126,6 @@ function saveSettings() {
     shoulderRatioMax: shoulderRatioMaxInput.value,
     measurementType: measurementTypeSelect.value,
     limbVariationThreshold: limbVariationThresholdInput.value,
-    rotateCamera: rotateCameraCheckbox.checked,
     cameraFacingMode: cameraSelect.value, 
   };
   localStorage.setItem('poseAppSettings', JSON.stringify(settings));
@@ -156,7 +145,6 @@ function loadSettings() {
     shoulderRatioMaxInput.value = settings.shoulderRatioMax || '25';
     measurementTypeSelect.value = settings.measurementType || 'Anatomical Path';
     limbVariationThresholdInput.value = settings.limbVariationThreshold || '8';
-    rotateCameraCheckbox.checked = settings.rotateCamera || false;
     cameraSelect.value = settings.cameraFacingMode || 'user';
   }
 }
@@ -190,7 +178,6 @@ export {
   shoulderRatioMaxInput,
   measurementTypeSelect,
   limbVariationThresholdInput,
-  rotateCameraCheckbox,
   cameraSelect,
   switchPage,
   updateBackgroundColor,
