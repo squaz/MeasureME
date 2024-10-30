@@ -35,6 +35,7 @@ const homePage = document.getElementById('homePage');
 const settingsPage = document.getElementById('settingsPage');
 
 // Live view
+const videoWrapper = document.getElementById('videoWrapper');
 const liveView = document.getElementById('liveView');
 const video = document.getElementById('webcam');
 const webcamCanvas = document.getElementById('webcamCanvas');
@@ -42,6 +43,9 @@ const webcamCanvas = document.getElementById('webcamCanvas');
 function initUI() {
   // Load settings from local storage
   loadSettings();
+
+   // Toggle fullscreen on click
+   videoWrapper.addEventListener('click', toggleFullscreen);
 
   // Start Camera Button Handler
   startCameraButton.addEventListener('click', async () => {
@@ -104,6 +108,27 @@ function switchPage(pageId) {
   } else if (pageId === 'settingsPage') {
     settingsPage.style.display = 'block';
     document.getElementById('settingsLink').classList.add('active');
+  }
+}
+
+// Function to toggle fullscreen mode
+function toggleFullscreen() {
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    // Enter fullscreen
+    if (videoWrapper.requestFullscreen) {
+      videoWrapper.requestFullscreen();
+    } else if (videoWrapper.webkitRequestFullscreen) {
+      // Safari compatibility
+      videoWrapper.webkitRequestFullscreen();
+    }
+  } else {
+    // Exit fullscreen
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      // Safari compatibility
+      document.webkitExitFullscreen();
+    }
   }
 }
 
